@@ -15,7 +15,6 @@ export class UsersController {
                 error: error.details[0].message
             }
         }
-        this.usersService.create(value)
-        return { value };
+        return this.usersService.create(value)
     }
 }

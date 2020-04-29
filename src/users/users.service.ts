@@ -1,18 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './create-user.dto';
-import { ProfilesModel } from './profiles.model'
+import { CreateFullUserDto, CreateUserCommentDto, UserDto, UserCommentDto } from './user.dto';
+import { ProfilesModel } from './models/profiles.model'
+import { UsersModel } from './models/users.model'
+import { UsersCommentsModel } from './models/users-comments.model'
 
 @Injectable()
 export class UsersService {
-    async create(user: CreateUserDto){
+    async create(user: CreateFullUserDto):  Promise<UserDto>{
+        return ProfilesModel.createFullProfile({
+            email: user.email,
+            nickname: user.nickname,
+            firstName: user.firstName,
+            lastName: user.lastName
+        });
+    }
 
-       const inserted = ProfilesModel.create({
-        nickname: user.nickname,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email
-    });
+    async getUserById(id: number): Promise<UserDto>{
+        return await UsersModel.getById(id)
+    }
 
-        return inserted
+    async createComment(user: CreateUserCommentDto): Promise<UserCommentDto>{
+        return UsersCommentsModel.create({
+            profileId: user.profileId,
+            comment: user.comment
+        });
     }
 }

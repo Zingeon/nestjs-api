@@ -2,8 +2,6 @@
 exports.up = function(knex) {
     return knex.schema.createTable('users_comments', (table) => {
         table.increments();
-        // table.integer('usersId').unsigned().notNullable();
-        // table.foreign('usersId').references('id').inTable('users');
         table.integer('profileId').unsigned().notNullable();
         table.foreign('profileId').references('id').inTable('profiles');
         table.text('comment');
